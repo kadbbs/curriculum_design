@@ -8,12 +8,13 @@ public class login_ui extends JFrame {
     public static void init(){
         JFrame jFrame=new JFrame("毕业设计管理系统");
         jFrame.setSize(800,600);
-        jFrame.setLayout(new SpringLayout());
+        //jFrame.setLayout(new SpringLayout());
         //居中
         jFrame.setLocationRelativeTo(null);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        SpringLayout springLayout=new SpringLayout();
 
-        JPanel panel=new JPanel();
+        JPanel panel=new JPanel(springLayout);
 
 
         //jFrame.setVisible(true);
@@ -24,9 +25,42 @@ public class login_ui extends JFrame {
         JPasswordField pwd_text=new JPasswordField(20);
 
 
+        //获取约束
+        SpringLayout.Constraints user_c= springLayout.getConstraints(user);
+        SpringLayout.Constraints user_text_c= springLayout.getConstraints(user_text);
+        SpringLayout.Constraints pwd_c= springLayout.getConstraints(pwd);
+        SpringLayout.Constraints pwd_text_c= springLayout.getConstraints(pwd_text);
+        //
+        user_c.setX(Spring.constant(100));
+        user_c.setY(Spring.constant(20));
+
+        user_text_c.setConstraint(SpringLayout.WEST,Spring.sum(user_c.getConstraint(SpringLayout.EAST),Spring.constant(10)));
+
+        user_text_c.setConstraint(SpringLayout.NORTH,user_c.getConstraint(SpringLayout.NORTH));
+        //
+        pwd_c.setConstraint(SpringLayout.EAST,user_c.getConstraint(SpringLayout.EAST));//东面
+        pwd_c.setConstraint(SpringLayout.NORTH,Spring.sum(user_c.getConstraint(SpringLayout.SOUTH),Spring.constant(15)));//我的北离你的南
+
+        pwd_text_c.setConstraint(SpringLayout.WEST,user_text_c.getConstraint(SpringLayout.WEST));
+        pwd_text_c.setConstraint(SpringLayout.NORTH,pwd_c.getConstraint(SpringLayout.NORTH));
+
+
+
+
         JButton jb_login=new JButton("登录");
-        jb_login.setLocation(300,600);
+        //jb_login.setLocation(300,600);
+        //获取Jbutton约束
+        SpringLayout.Constraints jb_login_c= springLayout.getConstraints(jb_login);
+
+        jb_login_c.setConstraint(SpringLayout.NORTH,Spring.sum(pwd_c.getConstraint(SpringLayout.SOUTH),Spring.constant(15)));
+        jb_login_c.setConstraint(SpringLayout.EAST,Spring.sum(pwd_c.getConstraint(SpringLayout.EAST),Spring.constant(80)));
+
         JButton jb_register=new JButton("注册");
+        SpringLayout.Constraints jb_register_c= springLayout.getConstraints(jb_register);
+        jb_register_c.setConstraint(SpringLayout.NORTH,jb_login_c.getConstraint(SpringLayout.NORTH));
+        jb_register_c.setConstraint(SpringLayout.WEST,Spring.sum(jb_login_c.getConstraint(SpringLayout.EAST),Spring.constant(20)));
+
+
         jb_register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,6 +162,7 @@ public class login_ui extends JFrame {
 
 
     public static void main(String[] args) {
+
         init();
     }
 }
