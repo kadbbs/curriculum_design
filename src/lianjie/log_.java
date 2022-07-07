@@ -84,6 +84,20 @@ public class log_ {
         login.put("loginName",user);
         login.put("loginPwd",password);
         return login;
+        }
+    public static Map<String, String> initUI(String u,String p) {
+//        Scanner scanner=new Scanner(System.in);
+//        System.out.println("用户名");
+//        String user=scanner.nextLine();
+//        System.out.println("密码");
+//        String password=scanner.nextLine();
+        String user=u;
+        String password=p;
+        Map<String,String> login=new HashMap<>();
+        login.put("loginName",user);
+        login.put("loginPwd",password);
+        return login;
     }
+
 
 }

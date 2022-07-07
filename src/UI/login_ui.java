@@ -1,11 +1,16 @@
 package UI;
 
+import lianjie.log_;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class login_ui extends JFrame {
-    public static void init(){
+    static String zhanghao=null;
+    public static Map<String,String> init(){
         JFrame jFrame=new JFrame("毕业设计管理系统");
         jFrame.setSize(800,600);
         //jFrame.setLayout(new SpringLayout());
@@ -23,8 +28,14 @@ public class login_ui extends JFrame {
         JTextField user_text=new JTextField(20);
         JLabel pwd=new JLabel("密码");
         JPasswordField pwd_text=new JPasswordField(20);
-
-
+        zhanghao=user_text.getText();
+        //获取输入值
+        Map<String,String> login_map=new HashMap<>();
+        //Map<String,String> login=new HashMap<>();
+//        Map<String,String> login=new HashMap<>();
+//        login.put("loginName",user_text.getText());
+//        System.out.println(user_text.getText());
+//        login.put("loginPwd",new String(pwd_text.getPassword()));
         //获取约束
         SpringLayout.Constraints user_c= springLayout.getConstraints(user);
         SpringLayout.Constraints user_text_c= springLayout.getConstraints(user_text);
@@ -59,11 +70,30 @@ public class login_ui extends JFrame {
         SpringLayout.Constraints jb_register_c= springLayout.getConstraints(jb_register);
         jb_register_c.setConstraint(SpringLayout.NORTH,jb_login_c.getConstraint(SpringLayout.NORTH));
         jb_register_c.setConstraint(SpringLayout.WEST,Spring.sum(jb_login_c.getConstraint(SpringLayout.EAST),Spring.constant(20)));
+        jb_login.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Map<String,String> login_map=new HashMap<>();
+//                login.put("loginName",user_text.getText());
+//                System.out.println(user_text.getText());
+//                login.put("loginPwd",new String(pwd_text.getPassword()));
 
+                Map<String,String> login_map=  log_.initUI(user_text.getText(),new String(pwd_text.getPassword()));
+                boolean loginSuccess= log_.login (login_map);
+                if(loginSuccess==true){
+                    jFrame.setVisible(false);
+                    home_ui.home();
+                }else if(loginSuccess==false){
+                    warning();
+                }
+                //home_ui.home();
+            }
+        });
 
         jb_register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 register();
             }
         });
@@ -75,6 +105,7 @@ public class login_ui extends JFrame {
         panel.add(pwd_text);
         jFrame.add(panel);
         jFrame.setVisible(true);
+        return login_map;
 
     }
     public static void register(){
@@ -156,13 +187,27 @@ public class login_ui extends JFrame {
 
 
     }
+    public static void warning(){
+        JFrame jFrame=new JFrame("waring");
+        jFrame.setSize(80,60);
+        //jFrame.setLayout(new SpringLayout());
+        //居中
+        jFrame.setLocationRelativeTo(null);
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        JLabel user=new JLabel("用户名或密码错误");
+        jFrame.add(user);
+        jFrame.setVisible(true);
 
-
-
-
-
-    public static void main(String[] args) {
-
-        init();
     }
+
+
+
+
+
+
+//    public static void main(String[] args) {
+//
+//           init();
+//        //log_.login(init());
+//    }
 }
